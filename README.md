@@ -1,2 +1,565 @@
-# Reserva-gabriel-ramos
-Visualizacion de reserva
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Reserva — Shuttle Vacation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #F8F5EF;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: #252525;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+  }
+
+  .top-strip {
+    height: 6px;
+    background: linear-gradient(90deg, #FFCD19 0%, #FFCD19 70%, #00C9A7 70%, #00C9A7 100%);
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background-color: #252525;
+    padding: 26px 32px;
+    text-align: center;
+  }
+  .header .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  .header .logo span { color: #FFCD19; }
+  .header .tagline {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #00C9A7;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* ===== STATUS BAR ===== */
+  .status-bar {
+    background-color: #00C9A7;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 32px 32px 16px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 1px;
+    margin: 0 0 6px;
+  }
+  .hero p.sub {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+  }
+  .hero .res-number {
+    display: inline-block;
+    margin-top: 14px;
+    background-color: #FFCD19;
+    color: #252525;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 8px 22px;
+    border-radius: 30px;
+  }
+
+  /* ===== SECTION TITLES ===== */
+  .section {
+    padding: 24px 32px;
+    border-top: 1px solid #f0ece3;
+  }
+  .section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 19px;
+    letter-spacing: 1px;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h2 .icon-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00C9A7;
+    display: inline-block;
+  }
+
+  /* ===== ITINERARIO / ROUTE ===== */
+  .route {
+    display: flex;
+    gap: 16px;
+  }
+  .route .timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+  }
+  .route .timeline .point {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid #FFCD19;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .route .timeline .point.end {
+    border-color: #00C9A7;
+  }
+  .route .timeline .connector {
+    width: 2px;
+    flex: 1;
+    background-image: linear-gradient(to bottom, #d9d9d9 0, #d9d9d9 6px, transparent 6px, transparent 12px);
+    background-size: 2px 12px;
+    margin: 4px 0;
+  }
+  .route .stops {
+    flex: 1;
+  }
+  .route .stop {
+    margin-bottom: 28px;
+  }
+  .route .stop:last-child { margin-bottom: 0; }
+  .route .stop .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #00C9A7;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .route .stop .place {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .route .stop .time {
+    font-size: 13px;
+    color: #999;
+  }
+
+  /* ===== INFO GRID ===== */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .info-card {
+    background-color: #F8F5EF;
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .info-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .info-card .value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #252525;
+  }
+
+  /* ===== VEHICLE CARD ===== */
+  .vehicle-card {
+    border: 2px solid #252525;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .vehicle-card .v-info .v-type {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #00C9A7;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .vehicle-card .v-info .v-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+  .vehicle-card .v-info .v-capacity {
+    font-size: 13px;
+    color: #999;
+    margin-top: 4px;
+  }
+  .vehicle-card .v-badge {
+    background-color: #FFCD19;
+    color: #252525;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    border-radius: 30px;
+  }
+
+  /* ===== AMENIDADES ===== */
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .amenity {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: #F8F5EF;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .amenity .check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #00C9A7;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .amenity .text {
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .amenity .text small {
+    display: block;
+    color: #999;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+  .premium-note {
+    margin-top: 14px;
+    background-color: #fffaeb;
+    border-left: 4px solid #FFCD19;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #5a5a5a;
+    line-height: 1.6;
+  }
+  .premium-note strong { color: #252525; }
+
+  /* ===== PAGO ===== */
+  .payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .payment-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ece3;
+  }
+  .payment-table td.label { color: #999; }
+  .payment-table td.value { text-align: right; font-weight: 600; }
+  .payment-table tr.total td {
+    border-bottom: none;
+    padding-top: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .payment-table tr.total td.value { color: #00C9A7; }
+
+  /* ===== TÉRMINOS ===== */
+  .terms-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #5a5a5a;
+  }
+  .terms-list li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .terms-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #FFCD19;
+    font-weight: 700;
+  }
+  .terms-list li strong { color: #252525; }
+
+  /* ===== CONTACTO ===== */
+  .contact-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .contact-btn {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 14px 16px;
+    border-radius: 30px;
+    min-width: 140px;
+  }
+  .contact-btn.whatsapp {
+    background-color: #00C9A7;
+    color: #FFFFFF;
+  }
+  .contact-btn.call {
+    background-color: #FFCD19;
+    color: #252525;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background-color: #252525;
+    padding: 32px;
+    text-align: center;
+    color: #cfcfcf;
+  }
+  .footer .slogan {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #FFFFFF;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .footer .slogan span { color: #00C9A7; }
+  .footer p { font-size: 12px; margin: 4px 0; line-height: 1.6; }
+  .footer .socials { margin-top: 16px; font-size: 12px; letter-spacing: 1px; }
+  .footer .socials a { color: #FFCD19; text-decoration: none; margin: 0 6px; font-weight: 600; }
+  .bottom-strip {
+    height: 6px;
+    background: linear-gradient(90deg, #00C9A7 0%, #00C9A7 30%, #FFCD19 30%, #FFCD19 100%);
+  }
+
+  @media (max-width: 480px) {
+    .info-grid, .amenities-grid { grid-template-columns: 1fr; }
+    .contact-grid { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-strip"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <p class="logo">SHUTTLE <span>VACATION</span></p>
+    <p class="tagline">Cancún · Riviera Maya · Tulum</p>
+  </div>
+
+  <div class="status-bar">✓ Reserva confirmada y pagada</div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Tu viaje, todo en un lugar</h1>
+    <p class="sub">Aquí encontrarás todos los detalles de tu transportación</p>
+    <div class="res-number">Reserva #[XXXXXX]</div>
+  </div>
+
+  <!-- ITINERARIO -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Itinerario</h2>
+    <div class="route">
+      <div class="timeline">
+        <div class="point"></div>
+        <div class="connector"></div>
+        <div class="point end"></div>
+      </div>
+      <div class="stops">
+        <div class="stop">
+          <div class="label">Origen</div>
+          <div class="place">[Aeropuerto Internacional de Cancún]</div>
+          <div class="time">[DD/MM/AAAA] · Pick-up [HH:MM]</div>
+        </div>
+        <div class="stop">
+          <div class="label">Destino</div>
+          <div class="place">[Hotel / Dirección de destino]</div>
+          <div class="time">Llegada estimada: [HH:MM]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETALLES DEL PASAJERO -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Detalles del pasajero</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Nombre</div>
+        <div class="value">[Nombre completo]</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Pasajeros</div>
+        <div class="value">[Número de pasajeros]</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Tipo de servicio</div>
+        <div class="value">[Privado / Premium / Compartido]</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Núm. de vuelo</div>
+        <div class="value">[Número de vuelo]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VEHÍCULO -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Vehículo asignado</h2>
+    <div class="vehicle-card">
+      <div class="v-info">
+        <div class="v-type">Categoría [Sedan / Van / SUV / Sprinter]</div>
+        <div class="v-name">[VW Jetta / Transporter T7 / Sprinter]</div>
+        <div class="v-capacity">Hasta [X] pasajeros · [X] maletas</div>
+      </div>
+      <div class="v-badge">GO</div>
+    </div>
+  </div>
+
+  <!-- AMENIDADES -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Amenidades incluidas</h2>
+    <div class="amenities-grid">
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Conductor profesional<small>Verificado y certificado</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Monitoreo de vuelo<small>Ajustamos tu pick-up si tu vuelo se retrasa</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Agua embotellada<small>Para refrescarte en el camino</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Aire acondicionado<small>Climatizado todo el recorrido</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Wi-Fi a bordo<small>Mantente conectado durante el viaje</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Pancarta personalizada<small>Te recibimos fuera de la terminal</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Silla para bebé<small>Sin costo adicional</small></div>
+      </div>
+      <div class="amenity">
+        <div class="check">✓</div>
+        <div class="text">Asistencia con equipaje<small>De la terminal al vehículo</small></div>
+      </div>
+    </div>
+    <div class="premium-note">
+      <strong>¿Reservaste el servicio Premium (Shuttle Vacation Black)?</strong> Tu experiencia incluye además
+      sodas y jugos de cortesía a bordo, vehículo SUV o Sprinter VIP, y tiempo de espera extendido de 30 minutos en el hotel.
+    </div>
+  </div>
+
+  <!-- PAGO -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Resumen de pago</h2>
+    <table class="payment-table">
+      <tr>
+        <td class="label">Tarifa del servicio</td>
+        <td class="value">$[XXX.XX] USD</td>
+      </tr>
+      <tr>
+        <td class="label">Cargos por equipaje extra / extras</td>
+        <td class="value">$[0.00] USD</td>
+      </tr>
+      <tr>
+        <td class="label">Método de pago</td>
+        <td class="value">[PayPal / Efectivo al conductor]</td>
+      </tr>
+      <tr class="total">
+        <td class="label">Total pagado</td>
+        <td class="value">$[XXX.XX] USD</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- TÉRMINOS CLAVE -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>Lo importante de tu reserva</h2>
+    <ul class="terms-list">
+      <li><strong>Cambios de itinerario:</strong> notifícanos al menos 48 horas antes para asegurar tu servicio.</li>
+      <li><strong>Cancelaciones:</strong> no son reembolsables si se realizan con menos de 24 horas de anticipación.</li>
+      <li><strong>Espera en el hotel:</strong> 10 min (Compartido) · 20 min (Privado) · 30 min (Premium).</li>
+      <li><strong>Niños menores de 6 años:</strong> viajan gratis en servicio Privado o Premium, con silla incluida.</li>
+      <li><strong>Ubícanos en el aeropuerto:</strong> nuestro personal porta uniforme con logo y te espera fuera de la terminal.</li>
+    </ul>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="section">
+    <h2><span class="icon-dot"></span>¿Necesitas ayuda?</h2>
+    <div class="contact-grid">
+      <a href="https://wa.me/529981954115" class="contact-btn whatsapp">💬 WhatsApp directo</a>
+      <a href="mailto:reservas@shuttlevacation.com" class="contact-btn call">✉️ Escribir un correo</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="slogan">El viaje empieza <span>desde que llegas</span></p>
+    <p>Calidad · Comfort · Excelencia</p>
+    <p>Shuttle Vacation — Transportación privada en Cancún, Riviera Maya y Tulum</p>
+    <div class="socials">
+      <a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a> · <a href="#">X</a>
+    </div>
+  </div>
+
+  <div class="bottom-strip"></div>
+
+</div>
+</body>
+</html>
+
